@@ -1,17 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Vanilla JavaScript App</title>
+  <meta charset="UTF-8" />
+  <title>Highspot Auth Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
-
 <body>
-  <main>
-    <h1>Vanilla JavaScript App</h1>
-  </main>
-</body>
 
+  <h1>Highspot Authentication</h1>
+  <button id="authBtn">Test Highspot Auth</button>
+  <p id="result"></p>
+
+  <script>
+    document.getElementById('authBtn').addEventListener('click', async () => {
+      const resultText = document.getElementById('result');
+      resultText.textContent = '⏳ Authenticating...';
+
+      try {
+        const response = await fetch('/api/index');
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          resultText.textContent = `✅ Authentication successful. Spot count: ${data.count}`;
+        } else {
+          resultText.textContent = `❌ Failed: ${data.error || response.statusText}`;
+        }
+      } catch (err) {
+        resultText.textContent = `❌ Network error: ${err.message}`;
+      }
+    });
+  </script>
+
+</body>
 </html>
